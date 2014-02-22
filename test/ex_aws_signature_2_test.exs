@@ -8,9 +8,9 @@ defmodule ExAwsSignature_2Test do
                   "Action=DescribeJobFlows&" <>
                   "SignatureMethod=HmacSHA256&" <>
                   "SignatureVersion=2&" <>
-                  "Timestamp=2011-10-03T15%3A19%3A30&" <>
+                  "Timestamp=" <>
                   "Version=2009-03-31&" <>
-                  "Signature=i91nKc4PWAt0JJIdXwz9HxZCJDdiy6cf%2FMj6vPxyYIs%3D"
+                  "Signature="
 
   query_params = [Action: "DescribeJobFlows",]
                   
@@ -30,22 +30,18 @@ defmodule ExAwsSignature_2Test do
     assert AWS.Signature2.access_key == System.get_env("AWS_ACCESS_KEY")
   end
 
-  test "atom to parameter utility" do
-    assert AWS.Signature2.atom_to_parameter(:Quux) == "Quux"
-  end
-
   test "params to query string" do
     params = [b: 3, a: "1 + 2", c: "quux"]
-    assert AWS.Signature2.params_to_query_string(params) == 
+    assert AWS.Signature2.params_to_qs(params) == 
                             "a=1%20%2B%202&b=3&c=quux"
   end
 
-  # test "correct signature" do
-  #   signature = "i91nKc4PWAt0JJIdXwz9HxZCJDdiy6cf%2FMj6vPxyYIs%3D"
-  #   assert AWS.Signature2.sign("https://elasticmapreduce.amazonaws.com",
-  #                              Action: "DescribeJobFlows") == signature
-  # end
-                               
-
+  test "signature" do
+    url = "https://elasticmapreduce.amazonaws.com/"
+    sig = "i91nKc4PWAt0JJIdXwz9HxZCJDdiy6cf%2FMj6vPxyYIs%3D"
+    ts = "2011-10-03T15:19:30"
+    assert AWS.Signature2.sign(url, [Action: "DescribeJobFlaws"], :GET,
+                               nil, nil, ts) == sig
+  end
 
 end

@@ -21,7 +21,8 @@ defmodule ExAwsSignature_2.Mixfile do
   defp deps do
     [
      {:"elixir-datefmt", github: "bitwalker/elixir-datefmt"},
-     {:timex, github: "bitwalker/timex"}
+     {:timex, github: "bitwalker/timex"},
+     {:erlsha2, github: "vinoski/erlsha2"},
     ]
   end
 end
