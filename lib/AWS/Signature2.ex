@@ -1,4 +1,5 @@
 defmodule AWS.Signature2 do
+
   @moduledoc """
 AWS.Signature2 is an Elixir implementation of the AWS Signature
 Version 2 signing process as described here: http://amzn.to/1p4Z9dS
