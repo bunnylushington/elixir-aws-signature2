@@ -1,4 +1,17 @@
 defmodule AWS.Signature2 do
+  @moduledoc """
+AWS.Signature2 is an Elixir implementation of the AWS Signature
+Version 2 signing process as described here: http://amzn.to/1p4Z9dS
+
+Use it like:
+
+  {signature, request_url, method} = 
+    AWS.Signature2.sign("https://elasticmapreduce.amazonaws.com/", # URL
+                        [Action: "DescribeJobFlows"],              # params
+                        :GET)                                      # method
+
+Note the trailing / on the URL -- it is not optional!
+"""
 
   def sign(url, params, method, access \\ nil, secret \\ nil, date \\ nil) do
     access = if access == nil, do: access_key, else: access
