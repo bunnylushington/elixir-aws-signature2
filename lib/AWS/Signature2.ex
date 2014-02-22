@@ -9,20 +9,21 @@ defmodule AWS.Signature2 do
     qs = params_to_qs(params ++ 
                         [SignatureMethod: "HmacSHA256",
                          SignatureVersion: 2,
-                         AWSAccessKeyID: access,
+                         AWSAccessKeyId: access,
                          Version: "2009-03-31",
                          Timestamp: ts])
     message = Enum.join [method, uri_info.host, uri_info.path, qs], "\n"
-    :base64.encode(:hmac.hmac256(secret, message))
+    sig = URI.encode(:base64.encode(:hmac.hmac256(secret, message)))
+    request = "#{ url }?#{ qs }&Signature=#{ sig }"
+    {sig, request, method}
   end
-  
+
+  def secret_key, do: System.get_env("AWS_SECRET_KEY")
+  def access_key, do: System.get_env("AWS_ACCESS_KEY")
+
   def params_to_qs(params) do
     space = "%20"               # the AWS will not accept +, must be %20
     Regex.replace ~r/\+/, (Enum.sort(params) |> URI.encode_query), space
   end
-
-  # -- Convenience:
-  def secret_key, do: System.get_env("AWS_SECRET_KEY")
-  def access_key, do: System.get_env("AWS_ACCESS_KEY")
 
 end
