@@ -1,7 +1,21 @@
 defmodule ExAwsSignature_2Test do
   use ExUnit.Case
 
-  test "the truth" do
-    assert(true)
+  example_secret_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+  _example_query = "https://elasticmapreduce.amazonaws.com?" <>
+                  "AWSAccessKeyId=AKIAIOSFODNN7EXAMPLE&" <>
+                  "Action=DescribeJobFlows&" <>
+                  "SignatureMethod=HmacSHA256&" <>
+                  "SignatureVersion=2&" <>
+                  "Timestamp=2011-10-03T15%3A19%3A30&" <>
+                  "Version=2009-03-31&" <>
+                  "Signature=i91nKc4PWAt0JJIdXwz9HxZCJDdiy6cf%2FMj6vPxyYIs%3D"
+  
+  System.put_env("AWS_SECRET_KEY", example_secret_key)
+
+
+  test "found secret key" do
+    assert AWS.Signature2.secret_key ==
+                            "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
   end
 end
